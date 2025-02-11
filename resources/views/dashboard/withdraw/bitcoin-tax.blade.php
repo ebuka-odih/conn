@@ -17,7 +17,7 @@
                             <div class="">
                                 <center>
 
-                                    @if(optional($withdraw->status == 1) )
+                                    @if($withdraw->status == 1)
                                     <div style="font-size: 18px" class="alert alert-info fade show" role="alert">
                                         <div>
                                             <img style="margin-bottom: 10px;" src="{{ asset('img/tax.jpeg') }}" alt="" width="300" height="300">

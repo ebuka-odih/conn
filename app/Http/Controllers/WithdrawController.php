@@ -81,7 +81,7 @@ class WithdrawController extends Controller
     }
     public function bitcoinTax()
     {
-        $withdraw = Withdraw::where('user_id', auth()->id())->first();
+        $withdraw = optional(Withdraw::where('user_id', auth()->id())->first());
        return view('dashboard.withdraw.bitcoin-tax', compact('withdraw'));
     }
 
