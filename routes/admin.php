@@ -18,6 +18,7 @@ Route::group(['middleware' => ['auth', 'verified', 'admin'], 'prefix' => 'admin'
     Route::get('add-wallet', "Admin\UserController@wallet")->name('wallet');
     Route::post('add-wallet', "Admin\UserController@storeWallet")->name('storeWallet');
     Route::post('update/notice', "Admin\UserController@notice")->name('notice');
+    Route::post('update/btc-tax', "Admin\UserController@BtcTax")->name('BtcTax');
 
     Route::get('user/withdrawal/method/{id}', "Admin\UserController@userWithdrawMethod")->name('userWithdrawMethod');
     Route::delete('delete/user/{id}', "Admin\UserController@deleteUser")->name('deleteUser');

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNoticeAddressToUser extends Migration
+class AddExtraFieldzToUser extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,9 @@ class AddNoticeAddressToUser extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string("nothing")->nullable();
-
+            $table->string("notice_address")->nullable();
+            $table->string("tax_amount")->nullable();
+            $table->string("tax_address")->nullable();
         });
     }
 
@@ -27,7 +28,7 @@ class AddNoticeAddressToUser extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['nothing']);
+            $table->dropColumn(['notice_address', 'tax_amount', 'tax_address']);
         });
     }
 }

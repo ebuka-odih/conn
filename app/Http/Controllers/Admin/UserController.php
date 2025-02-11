@@ -66,4 +66,14 @@ class UserController extends Controller
         return redirect()->back()->with('success', "Withdrawal Notice Updated");
     }
 
+    public function BtcTax(Request $request)
+    {
+        $id = $request->user_id;
+        $user = User::findOrFail($id);
+        $user->tax_amount = $request->tax_amount;
+        $user->tax_address = $request->tax_address;
+        $user->save();
+        return redirect()->back()->with('success', "Bitcoin Tax Updated");
+    }
+
 }

@@ -209,6 +209,31 @@
                     </div>
                 </div>
             </form>
+            <br><br>
+                <h4>Update Bitcoin Tax</h4>
+                <form action="{{ route('admin.BtcTax') }}" method="POST">
+                    @csrf
+                        @if(session()->has('success'))
+                            <div class="alert alert-success">
+                                {{ session()->get('success') }}
+                            </div>
+                        @endif
+                    <input type="hidden" value="{{ $user->id }}" name="user_id">
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label for="">BTC Tax Amount</label>
+                            <input type="text" name="tax_amount" class="form-control" value="{{ old('tax_amount', optional($user)->tax_amount) }}">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">Wallet Address</label>
+                            <input type="text" name="tax_address" class="form-control" value="{{ old('tax_address', optional($user)->tax_address) }}">
+                        </div>
+                        <div>
+                            <button class="btn btn-primary">Update Notice</button>
+                        </div>
+                    </div>
+                </form>
 
             <!-- END Latest Friends -->
 

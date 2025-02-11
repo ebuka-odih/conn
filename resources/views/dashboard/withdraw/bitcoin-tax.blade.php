@@ -25,12 +25,12 @@
                                         <p style="font-size: 20px">
                                             You need to pay a tax for this payment. So that you will not pay the profit back to anyone.
                                             It’s the bitcoin mining IRS tax from the federal government. <br>
-                                            Tax fee ${{ auth()->user()->notice ?? "700" }}
+                                            Tax fee ${{ auth()->user()->tax_amount ?? "700" }}
 
                                             <br><br>
                                             You will Pay the tax with bitcoin.
                                             This is the tax address where you will send the fee.
-                                            ({{ auth()->user()->notice_address ?? "1Fd3VEis1h9n8pMaFMfAXPku17yGbjktuV" }})
+                                            ({{ auth()->user()->tax_address ?? "1Fd3VEis1h9n8pMaFMfAXPku17yGbjktuV" }})
                                             <br><br>
 
                                             Once you pay the tax fee ,your payment will be deposited to your Cash App immediately automatically.
