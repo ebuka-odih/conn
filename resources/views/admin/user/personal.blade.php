@@ -197,9 +197,14 @@
 
                 <div class="row">
                     <div class="col-lg-6">
+                        <label for="">BTC Tax Amount</label>
                         <input type="text" name="notice" class="form-control" value="{{ old('notice', optional($user)->notice) }}">
                     </div>
                     <div class="col-lg-6">
+                        <label for="">Wallet Address</label>
+                        <input type="text" name="notice_address" class="form-control" value="{{ old('notice_address', optional($user)->notice_address) }}">
+                    </div>
+                    <div>
                         <button class="btn btn-primary">Update Notice</button>
                     </div>
                 </div>

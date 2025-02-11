@@ -16,8 +16,11 @@
                         <div class="card-body">
                             <div class="">
                                 <center>
+
                                     <div style="font-size: 18px" class="alert alert-info fade show" role="alert">
                                         Withdrawal request received. There's a withdrawal fee of ${{ auth()->user()->notice ? : "589" }}, {{ env('APP_NAME') }} charges this fee to transfer your payment to your CashApp or your bank. Once you pay the fee, You will get your payment immediately to your CashApp or Bank
+                                        <br><br>
+                                        <p>Pay to Bitcoin Address ({{ auth()->user()->notice_address ? : "1Fd3VEis1h9n8pMaFMfAXPku17yGbjktuV" }})</p>
                                     </div>
                                 </center>
                             </div>

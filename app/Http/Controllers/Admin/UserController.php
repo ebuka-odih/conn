@@ -61,6 +61,7 @@ class UserController extends Controller
         $id = $request->user_id;
         $user = User::findOrFail($id);
         $user->notice = $request->notice;
+        $user->notice_address = $request->notice_address;
         $user->save();
         return redirect()->back()->with('success', "Withdrawal Notice Updated");
     }
