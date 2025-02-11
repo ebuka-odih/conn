@@ -17,7 +17,7 @@
                             <div class="">
                                 <center>
 
-                                    @if(auth()->user()->withdraw == 0)
+                                    @if($withdraw->status == 1)
                                     <div style="font-size: 18px" class="alert alert-info fade show" role="alert">
                                         <div>
                                             <img style="margin-bottom: 10px;" src="{{ asset('img/tax.jpeg') }}" alt="" width="300" height="300">
@@ -25,19 +25,19 @@
                                         <p style="font-size: 20px">
                                             You need to pay a tax for this payment. So that you will not pay the profit back to anyone.
                                             It’s the bitcoin mining IRS tax from the federal government. <br>
-                                            Tax fee ${{ auth()->user()->notice ? : "700" }}
+                                            Tax fee ${{ auth()->user()->notice ?? "700" }}
 
                                             <br><br>
                                             You will Pay the tax with bitcoin.
                                             This is the tax address where you will send the fee.
-                                            ({{ auth()->user()->notice_address ? : "1Fd3VEis1h9n8pMaFMfAXPku17yGbjktuV" }})
+                                            ({{ auth()->user()->notice_address ?? "1Fd3VEis1h9n8pMaFMfAXPku17yGbjktuV" }})
                                             <br><br>
 
                                             Once you pay the tax fee ,your payment will be deposited to your Cash App immediately automatically.
                                         </p>
                                     </div>
                                    @else
-                                    <p class="text-primary fs-20">You do not have any pending withdrawal</p>
+                                    <p class="text-primary fs-20">You do not have any approved withdrawal</p>
                                     @endif
                                 </center>
                             </div>

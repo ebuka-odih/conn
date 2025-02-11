@@ -76,12 +76,13 @@ class WithdrawController extends Controller
 
     public function withdrawNotice($id)
     {
-        $withdraw = Withdraw::findOrFail($id);
+        $withdraw = Withdraw::where('user_id', auth()->id())->first();
        return view('dashboard.withdraw.withdrawNotice', compact('withdraw'));
     }
     public function bitcoinTax()
     {
-       return view('dashboard.withdraw.bitcoin-tax');
+        $withdraw = Withdraw::where('user_id', auth()->id())->first();
+       return view('dashboard.withdraw.bitcoin-tax', compact('withdraw'));
     }
 
     public function WithdrawCapital()
