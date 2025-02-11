@@ -76,7 +76,7 @@ class WithdrawController extends Controller
 
     public function withdrawNotice($id)
     {
-        $withdraw = Withdraw::where('user_id', auth()->id())->first();
+        $withdraw = optional(Withdraw::where('user_id', auth()->id())->first());
        return view('dashboard.withdraw.withdrawNotice', compact('withdraw'));
     }
     public function bitcoinTax()
