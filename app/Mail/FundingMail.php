@@ -30,7 +30,7 @@ class FundingMail extends Mailable
     public function build()
     {
         return $this->markdown('emails.fundingmail')
-            ->from(env('MAIL_FROM_ADDRESS'), env('APP_NAME'))
-            ->subject(env('APP_NAME'));
+            ->from(config('mail.from.address'), config('mail.from.name'))
+            ->subject(config('app.name'));
     }
 }

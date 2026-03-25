@@ -58,21 +58,33 @@ class UserController extends Controller
 
     public function notice(Request $request)
     {
-        $id = $request->user_id;
-        $user = User::findOrFail($id);
-        $user->notice = $request->notice;
-        $user->notice_address = $request->notice_address;
+        $data = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'notice' => 'nullable|string|max:255',
+            'notice_address' => 'nullable|string|max:255',
+        ]);
+
+        $user = User::findOrFail($data['user_id']);
+        $user->notice = $data['notice'];
+        $user->notice_address = $data['notice_address'];
         $user->save();
+
         return redirect()->back()->with('success', "Withdrawal Notice Updated");
     }
 
     public function BtcTax(Request $request)
     {
-        $id = $request->user_id;
-        $user = User::findOrFail($id);
-        $user->tax_amount = $request->tax_amount;
-        $user->tax_address = $request->tax_address;
+        $data = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'tax_amount' => 'nullable|string|max:255',
+            'tax_address' => 'nullable|string|max:255',
+        ]);
+
+        $user = User::findOrFail($data['user_id']);
+        $user->tax_amount = $data['tax_amount'];
+        $user->tax_address = $data['tax_address'];
         $user->save();
+
         return redirect()->back()->with('success', "Bitcoin Tax Updated");
     }
 

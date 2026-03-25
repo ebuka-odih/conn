@@ -8,6 +8,7 @@ use App\Mail\FundingMail;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class FundingController extends Controller
 {
@@ -19,48 +20,62 @@ class FundingController extends Controller
     }
     public function sendFund(Request $request)
     {
-        $data = $this->getData($request);
-        $data['user_id'] = $request->user_id;
-        $data['status'] = 1;
-        $data = Funding::create($data);
-        if ($data['type'] == 'Bonus'){
-            $user = User::findOrFail($data->user_id);
-            $user->ref_bonus += $request->amount;
-            $user->save();
-            Mail::to($data->user->email)->send(new FundingMail($data));
-            return redirect()->back()->with('success', "Fund sent successfully");
-        }elseif ($data['type'] == 'Profit')
-        {
-            $user = User::findOrFail($data->user_id);
-            $user->profit += $request->amount;
-            $user->save();
-            Mail::to($data->user->email)->send(new FundingMail($data));
-            return redirect()->back()->with('success', "Fund sent successfully");
-        }elseif ($data['type'] == 'Balance')
-        {
-            $user = User::findOrFail($data->user_id);
-            $user->balance += $request->amount;
-            $user->save();
-            Mail::to($data->user->email)->send(new FundingMail($data));
-            return redirect()->back()->with('success', "Fund sent successfully");
-        }elseif ($data['type'] == "Invested")
-        {
-            $user = User::findOrFail($data->user_id);
-            $user->invested += $request->amount;
-            $user->save();
-            Mail::to($data->user->email)->send(new FundingMail($data));
-            return redirect()->back()->with('success', "Fund sent successfully");
+        $payload = $this->getData($request);
+        $payload['status'] = 1;
+
+        $funding = Funding::create($payload);
+        $user = User::findOrFail($funding->user_id);
+
+        if ($funding->type === 'Bonus') {
+            $user->ref_bonus += $funding->amount;
+        } elseif ($funding->type === 'Profit') {
+            $user->profit += $funding->amount;
+        } elseif ($funding->type === 'Balance') {
+            $user->balance += $funding->amount;
+        } elseif ($funding->type === 'Invested') {
+            $user->invested += $funding->amount;
+        } else {
+            return redirect()->back()->with('error', "Fund Not Sent");
         }
-        return redirect()->back()->with('error', "Fund Not Sent");
+
+        $user->save();
+
+        $mailError = $this->sendFundingMail($funding);
+
+        if ($mailError !== null) {
+            return redirect()->back()->with('success', "Fund sent successfully")->with('error', $mailError);
+        }
+
+        return redirect()->back()->with('success', "Fund sent successfully");
     }
 
     protected function getData(Request $request)
     {
         $rules = [
-            'type' => 'required',
-            'amount' => 'required',
+            'user_id' => 'required|exists:users,id',
+            'type' => 'required|in:Balance,Invested,Bonus,Profit',
+            'amount' => 'required|numeric|min:0.01',
         ];
         return $request->validate($rules);
+    }
+
+    protected function sendFundingMail(Funding $funding)
+    {
+        $email = optional($funding->user)->email;
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return 'Account funded, but the user email address is missing or invalid so the notification email was not sent.';
+        }
+
+        try {
+            Mail::to($email)->send(new FundingMail($funding));
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return 'Account funded, but the notification email could not be sent. Check the mail sender configuration.';
+        }
+
+        return null;
     }
 
 
