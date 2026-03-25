@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function current(Request $request)
+    {
+        return $request->user();
+    }
+
     public function dashboard()
     {
         $user = Auth::user();
