@@ -70,7 +70,9 @@ class RegisterController extends Controller
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'unique:users', 'alpha_dash', 'min:3', 'max:30'],
+            'username' => ['nullable', 'string', 'unique:users', 'alpha_dash', 'min:3', 'max:30'],
+            'country' => ['nullable', 'string', 'max:255'],
+            'currency' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
 
@@ -80,15 +82,21 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
-        $referrer = User::whereUsername(session()->pull('referrer'))->first();
+        $referrerKey = session()->pull('referrer');
+        $referrer = $referrerKey
+            ? User::where('username', $referrerKey)->orWhere('id', $referrerKey)->first()
+            : null;
+
         $user = User::create([
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'username'  => $data['username'],
+            'username'  => $data['username'] ?? null,
+            'country' => $data['country'] ?? null,
+            'currency' => $data['currency'] ?? null,
             'phone'  => $data['phone'],
-            'referred_by' => $data['referred_by'],
+            'referred_by' => $data['referred_by'] ?? null,
             'referrer_id' => $referrer ? $referrer->id : null,
             'pass' => $data['password'],
         ]);

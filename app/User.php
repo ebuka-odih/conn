@@ -70,7 +70,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function getReferralLinkAttribute()
     {
-        return $this->referral_link = route('register', ['ref' => $this->username, 'id'=> $this->id]);
+        $referralCode = $this->username ?: $this->id;
+
+        return $this->referral_link = route('register', ['ref' => $referralCode, 'id'=> $this->id]);
     }
 
     public function status()
@@ -142,5 +144,4 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 }
-
 
