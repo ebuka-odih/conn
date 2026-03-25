@@ -14,7 +14,6 @@ Route::group(['middleware' => ['auth', 'verified', 'admin'], 'prefix' => 'admin'
 
     Route::get('user/details/{id}', "Admin\UserController@userDetails")->name('userDetails');
     Route::get('users', 'Admin\UserController@users')->name('users');
-    Route::delete('delete/user', 'Admin\UserController@deleteUser')->name('deleteUser');
     Route::get('add-wallet', "Admin\UserController@wallet")->name('wallet');
     Route::post('add-wallet', "Admin\UserController@storeWallet")->name('storeWallet');
     Route::post('update/notice', "Admin\UserController@notice")->name('notice');
