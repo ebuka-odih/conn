@@ -41,7 +41,7 @@
                                                     </tr>
                                                     <tr>
                                                         <th>User:</th>
-                                                        <td>{{ optional($deposit->user)->fullname() }}</td>
+                                                        <td>{{ trim($deposit->user->fullname()) ?: 'N/A' }}</td>
                                                     </tr>
 
                                                     <tr>
@@ -50,7 +50,7 @@
                                                     </tr>
                                                     <tr>
                                                         <th>Payment Method:</th>
-                                                        <td>{{ optional($deposit->payment_method)->name }}</td>
+                                                        <td>{{ $deposit->payment_method->name ?: 'N/A' }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Status:</th>

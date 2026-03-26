@@ -38,9 +38,11 @@
                                             </label>
                                             <div class="input-group">
                                                 <select class="form-control text-primary" name="payment_method_id" id="cmethod" required="">
-                                                   @foreach($wallets as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                    @endforeach
+                                                    @forelse($wallets as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->name ?: 'N/A' }}</option>
+                                                    @empty
+                                                        <option value="" disabled selected>No payment method available</option>
+                                                    @endforelse
 
                                                 </select>
                                                 <span class="input-group-text"><i class="icofont-caret-down"></i></span>
@@ -58,7 +60,7 @@
                                         </div>
 
                                         <div class="form-group mt-2">
-                                            <button type="submit" class="btn btn-primary btn-block shadow-sm" id="btn-crypto"> Proceed </button>
+                                            <button type="submit" class="btn btn-primary btn-block shadow-sm" id="btn-crypto" {{ $wallets->isEmpty() ? 'disabled' : '' }}> Proceed </button>
                                             <input type="hidden" name="typ" value="crypto">
                                         </div>
 
@@ -137,7 +139,7 @@
                                                     @foreach($deposits as $item)
                                                         <tr>
                                                             <td>{{ auth()->user()->currency }}{{ $item->amount }}</td>
-                                                            <td>{{ $item->payment_method->name }} <span>{!! $item->status() !!}</span></td>
+                                                            <td>{{ $item->payment_method->name ?: 'N/A' }} <span>{!! $item->status() !!}</span></td>
                                                             <td>{{ date('Y, m d', strtotime($item->created_at)) }}</td>
                                                         </tr>
                                                     @endforeach

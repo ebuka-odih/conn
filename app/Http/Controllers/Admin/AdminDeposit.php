@@ -13,13 +13,13 @@ class AdminDeposit extends Controller
 
     public function deposits()
     {
-        $deposits = Deposit::all();
+        $deposits = Deposit::with(['user', 'payment_method'])->get();
         return view('admin.transactions.deposits', compact('deposits'));
     }
 
     public function view_deposit($id)
     {
-        $deposit = Deposit::findOrFail($id);
+        $deposit = Deposit::with(['user', 'payment_method'])->findOrFail($id);
         return view('admin.transactions.deposit-details', compact('deposit'));
     }
 

@@ -15,13 +15,13 @@ class DepositController extends Controller
     public function deposit()
     {
         $wallets = PaymentMethod::all();
-        $deposits = Deposit::whereUserId(\auth()->id())->latest()->paginate(6);
+        $deposits = Deposit::with('payment_method')->whereUserId(\auth()->id())->latest()->paginate(6);
         return view('dashboard.deposit.deposit', compact('wallets', 'deposits'));
     }
     public function transactions()
     {
         $count = Deposit::whereUserId(\auth()->id())->where('status', 0)->count();
-        $deposits = Deposit::whereUserId(\auth()->id())->latest()->paginate(6);
+        $deposits = Deposit::with('payment_method')->whereUserId(\auth()->id())->latest()->paginate(6);
         return view('dashboard.deposit.deposit-history', compact('deposits', 'count'));
     }
 
@@ -29,7 +29,7 @@ class DepositController extends Controller
     {
         $request->validate([
            'amount' => 'required',
-           'payment_method_id' => 'required',
+           'payment_method_id' => 'required|exists:payment_methods,id',
         ]);
 
         $deposit = new Deposit();
@@ -43,7 +43,7 @@ class DepositController extends Controller
 
     public function payment($id)
     {
-        $deposit = Deposit::findOrFail($id);
+        $deposit = Deposit::with('payment_method')->findOrFail($id);
         return view('dashboard.deposit.payment', compact('deposit'));
     }
 

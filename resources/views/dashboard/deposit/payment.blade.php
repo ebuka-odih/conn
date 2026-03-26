@@ -58,16 +58,22 @@
                                                           <hr class="mb-1">
                                                           <div class="row">
                                                               <div class="col-12">
-                                                                  <div class="visible-print text-center">
-                                                                      {!! QrCode::size(150)->generate($deposit->payment_method->value); !!}
-                                                                  </div>
-                                                                  <label for="x_card_code" class="control-label mb-1 mt-3">{{ $deposit->payment_method->name }} Wallet Address</label>
-                                                                  <div class="input-group">
-                                                                      <input id="Amount" required="" placeholder="0.00" type="text" class="form-control cc-cvc" value="{{ $deposit->payment_method->value }}">
-                                                                      <div class="input-group-addon">
-                                                                          <a href="#" class="btn" data-clipboard-target="#Amount">Copy</a>
+                                                                  @if($deposit->payment_method->value)
+                                                                      <div class="visible-print text-center">
+                                                                          {!! QrCode::size(150)->generate($deposit->payment_method->value); !!}
                                                                       </div>
-                                                                  </div>
+                                                                      <label for="x_card_code" class="control-label mb-1 mt-3">{{ $deposit->payment_method->name ?: 'Wallet' }} Wallet Address</label>
+                                                                      <div class="input-group">
+                                                                          <input id="Amount" required="" placeholder="0.00" type="text" class="form-control cc-cvc" value="{{ $deposit->payment_method->value }}">
+                                                                          <div class="input-group-addon">
+                                                                              <a href="#" class="btn" data-clipboard-target="#Amount">Copy</a>
+                                                                          </div>
+                                                                      </div>
+                                                                  @else
+                                                                      <div class="alert alert-warning mb-0">
+                                                                          Payment method details are unavailable for this deposit. Contact support before uploading proof.
+                                                                      </div>
+                                                                  @endif
 
                                                               </div>
                                                           </div>

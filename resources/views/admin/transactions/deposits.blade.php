@@ -61,7 +61,7 @@
 
                                                     <tr>
                                                         <td class="text-center">
-                                                            {{ optional($item->user)->fullname() }}<br>
+                                                            {{ trim($item->user->fullname()) ?: 'N/A' }}<br>
                                                         </td>
                                                         <td class="fw-semibold">
                                                             {{ date('d-M-y', strtotime($item->created_at)) }}

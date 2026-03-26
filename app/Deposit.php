@@ -8,9 +8,14 @@ use AmrShawky\LaravelCurrency\Facade\Currency;
 class Deposit extends Model
 {
     protected $guarded = [];
+
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withDefault([
+            'firstname' => 'N/A',
+            'lastname' => '',
+            'email' => null,
+        ]);
     }
 
     public function transId()
@@ -20,7 +25,10 @@ class Deposit extends Model
 
     public function payment_method()
     {
-        return $this->belongsTo(PaymentMethod::class, "payment_method_id");
+        return $this->belongsTo(PaymentMethod::class, "payment_method_id")->withDefault([
+            'name' => 'N/A',
+            'value' => null,
+        ]);
     }
 
     public function status()
