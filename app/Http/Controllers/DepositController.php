@@ -32,12 +32,21 @@ class DepositController extends Controller
            'payment_method_id' => 'required|exists:payment_methods,id',
         ]);
 
+        $user = Auth::user();
+
+        if (! $user || ! $user->email) {
+            return redirect()->back()->with('declined', 'Unable to create deposit for this account right now.');
+        }
+
         $deposit = new Deposit();
-        $deposit->user_id = Auth::id();
+        $deposit->user_id = $user->id;
         $deposit->amount = $request->amount;
         $deposit->payment_method_id = $request->payment_method_id;
         $deposit->save();
-        Mail::to($deposit->user->email)->send(new DepositAlert($deposit));
+
+        $deposit->load('payment_method');
+
+        Mail::to($user->email)->send(new DepositAlert($deposit));
         return redirect()->route('user.payment', $deposit->id);
     }
 
